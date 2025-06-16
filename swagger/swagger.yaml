@@ -1,0 +1,113 @@
+openapi: 3.0.0
+info:
+  title: Carambar & Co – API Blagues
+  version: 1.0.0
+  description: |
+    Mini‑API REST pour gérer et récupérer des blagues Carambar.
+    Base technique : Node + Express + Sequelize + SQLite.
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Serveur local (développement)
+
+tags:
+  - name: Blagues
+    description: Tout ce qui concerne les blagues
+
+components:
+  schemas:
+    Joke:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 3
+        question:
+          type: string
+          example: Quel est le sport le plus fruité ?
+        answer:
+          type: string
+          example: La boxe : tu prends des pêches dans la poire...
+        createdAt:
+          type: string
+          format: date-time
+          example: 2025-06-13T14:52:18.000Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2025-06-13T14:52:18.000Z
+
+paths:
+
+  /blagues:
+    get:
+      tags: [Blagues]
+      summary: Liste toutes les blagues
+      responses:
+        '200':
+          description: Tableau de blagues
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Joke'
+
+    post:
+      tags: [Blagues]
+      summary: Ajoute une nouvelle blague
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [question, answer]
+              properties:
+                question:
+                  type: string
+                  example: Pourquoi les plongeurs plongent‑ils toujours en arrière ?
+                answer:
+                  type: string
+                  example: Parce que sinon ils tombent dans le bateau.
+      responses:
+        '201':
+          description: Blague créée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Joke'
+        '400':
+          description: Données manquantes ou mal formées
+
+  /blagues/{id}:
+    get:
+      tags: [Blagues]
+      summary: Récupère une blague par son ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Blague trouvée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Joke'
+        '404':
+          description: Blague non trouvée
+
+  /blagues/random/blague:
+    get:
+      tags: [Blagues]
+      summary: Récupère une blague aléatoire
+      responses:
+        '200':
+          description: Blague aléatoire
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Joke'
