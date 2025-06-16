@@ -7,6 +7,8 @@ info:
     Base technique : Node + Express + Sequelize + SQLite.
 
 servers:
+  - url: https://carambar-api-63au.onrender.com/api/v1
+    description: Production (Render)
   - url: http://localhost:3000/api/v1
     description: Serveur local (développement)
 
